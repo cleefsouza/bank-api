@@ -1,5 +1,7 @@
 package com.eprogramar.bank.api
 
+import com.eprogramar.bank.api.model.Account
+import com.eprogramar.bank.api.repository.AccountRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
