@@ -30,9 +30,9 @@ class AccountControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.jsonPath("\$").isArray)
                 .andExpect(MockMvcResultMatchers.jsonPath("\$[0].id").isNumber)
-                .andExpect(MockMvcResultMatchers.jsonPath("\$[1].name").isString)
-                .andExpect(MockMvcResultMatchers.jsonPath("\$[2].document").isString)
-                .andExpect(MockMvcResultMatchers.jsonPath("\$[3].phone").isString)
+                .andExpect(MockMvcResultMatchers.jsonPath("\$[0].name").isString)
+                .andExpect(MockMvcResultMatchers.jsonPath("\$[0].document").isString)
+                .andExpect(MockMvcResultMatchers.jsonPath("\$[0].phone").isString)
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -42,10 +42,10 @@ class AccountControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/accounts/${account.id}"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
-                .andExpect(MockMvcResultMatchers.jsonPath("\$[0].id").value(account.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("\$[1].name").value(account.name))
-                .andExpect(MockMvcResultMatchers.jsonPath("\$[2].document").value(account.document))
-                .andExpect(MockMvcResultMatchers.jsonPath("\$[3].phone").value(account.phone))
+                .andExpect(MockMvcResultMatchers.jsonPath("\$.id").value(account.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("\$.name").value(account.name))
+                .andExpect(MockMvcResultMatchers.jsonPath("\$.document").value(account.document))
+                .andExpect(MockMvcResultMatchers.jsonPath("\$.phone").value(account.phone))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -75,7 +75,7 @@ class AccountControllerTest {
 
         val json = ObjectMapper().writeValueAsString(account);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/accounts/${account.id}")
+        mockMvc.perform(MockMvcRequestBuilders.put("/accounts/${account.id}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
