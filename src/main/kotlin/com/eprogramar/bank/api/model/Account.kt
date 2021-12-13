@@ -10,5 +10,5 @@ data class Account(
         var id: Long? = null,
         val name: String,
         val document: String,
-        val phone: String
+        val phone: String?
 )

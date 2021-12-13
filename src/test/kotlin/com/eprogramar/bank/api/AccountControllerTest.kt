@@ -53,7 +53,7 @@ class AccountControllerTest {
 
     @Test
     fun `test create account`() {
-        val account = Account(name = "Test", document = "12345678910", phone = "987654321")
+        val account = Account(name = "Test Post", document = "12345678910", phone = "987654321")
         val json = ObjectMapper().writeValueAsString(account);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/accounts")
@@ -72,7 +72,7 @@ class AccountControllerTest {
     @Test
     fun `test update account`() {
         val account = accountRepository
-                .save(Account(name = "Test", document = "12345678910", phone = "987654321"))
+                .save(Account(name = "Test Post", document = "12345678910", phone = "987654321"))
                 .copy(name = "Test Updated");
 
         val json = ObjectMapper().writeValueAsString(account);
@@ -104,5 +104,39 @@ class AccountControllerTest {
         val findById = accountRepository.findById(account.id!!)
 
         Assertions.assertFalse(findById.isPresent);
+    }
+
+    @Test
+    fun `test create account validation error empty name`() {
+        val account = Account(name = "", document = "12345678910", phone = "987654321")
+        val json = ObjectMapper().writeValueAsString(account);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/accounts")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.statusCode").isNumber)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.message").isString)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.statusCode").value(400))
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.message").value("Name cannot be empty!"))
+            .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    fun `test create account validation error name should be 5 character`() {
+        val account = Account(name = "Test", document = "12345678910", phone = "987654321")
+        val json = ObjectMapper().writeValueAsString(account);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/accounts")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.statusCode").isNumber)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.message").isString)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.statusCode").value(400))
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.message").value("Name should be 5 character!"))
+            .andDo(MockMvcResultHandlers.print());
     }
 }

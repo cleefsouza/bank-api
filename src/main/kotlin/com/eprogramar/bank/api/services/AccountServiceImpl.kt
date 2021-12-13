@@ -3,12 +3,15 @@ package com.eprogramar.bank.api.services
 import com.eprogramar.bank.api.model.Account
 import com.eprogramar.bank.api.repository.AccountRepository
 import org.springframework.stereotype.Service
+import org.springframework.util.Assert
 import java.util.*
 
 @Service
 class AccountServiceImpl(private val repository: AccountRepository) : AccountService {
 
     override fun create(account: Account): Account {
+        validateFields(account.name, account.document);
+
         return repository.save(account);
     }
 
@@ -40,5 +43,12 @@ class AccountServiceImpl(private val repository: AccountRepository) : AccountSer
         repository.findById(id).map {
             repository.delete(it)
         }.orElseThrow { throw RuntimeException("Id not found: $id") };
+    }
+
+    private fun validateFields(name: String, document: String) {
+        Assert.hasLength(name, "Name cannot be empty!")
+        Assert.isTrue(name.length >= 5, "Name should be 5 character!")
+        Assert.hasLength(document, "Document cannot be empty!")
+        Assert.isTrue(document.length == 11, "Document should be 11 character!")
     }
 }
