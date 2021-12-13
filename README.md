@@ -5,6 +5,10 @@
 ### Tecnologias Usadas
 - Kotlin
 - SpringBoot
+- Spring Web
+- H2 Database
+- JPA _ Spring Data
+- Maven
 
 ### Executando
 - Clone o projeto:
