@@ -7,7 +7,8 @@
 - SpringBoot
 - Spring Web
 - H2 Database
-- JPA _ Spring Data
+- JPA
+- Spring Data
 - Maven
 
 ### Executando
